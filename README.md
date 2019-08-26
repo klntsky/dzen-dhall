@@ -49,16 +49,13 @@ let memoryUsage
 	-- ^ Colon means "has type". `memoryUsage` is a `Bar`
 	= bashWithBinaries
 	  -- ^ Call to a function named `bashWithBinaries` with three arguments:
-	  [ "free", "grep", "echo", "awk" ]
-	  -- ^ Binaries required to run the script (used to exit early if some of them
-	  -- are not present).
+	  [ "free", "grep", "awk" ]
+	  -- ^ A list of binaries required to run the script (used to exit early if
+	  -- some of them are not present).
 	  5000
 	  -- ^ Update interval in milliseconds
 	  ''
-	  TMP=`free -b | grep 'Mem'`
-	  TotalMem=`echo "$TMP" | awk '{ print $2; }'`
-	  UsedMem=`echo "$TMP" | awk '{ print $3; }'`
-	  echo "$((UsedMem * 100 / TotalMem))"
+	  free -b | grep Mem | awk '{ printf("%.0f\n", $3 * 100 / $2) }';
 	  ''
 	  -- ^ The script itself
 
@@ -66,13 +63,10 @@ let memoryUsage
 let swapUsage
 	: Bar
 	= bashWithBinaries
-	  [ "free", "grep", "echo", "awk" ]
+	  [ "free", "grep", "awk" ]
 	  5000
 	  ''
-	  TMP=`free -b | grep 'Swap'`
-	  TotalSwap=`echo "$TMP" | awk '{ print $2; }'`
-	  UsedSwap=`echo "$TMP" | awk '{ print $3; }'`
-	  echo "$((UsedSwap * 100 / TotalSwap))"
+	  free -b | grep Swap | awk '{ printf("%.0f\n", $3 * 100 / $2) }';
 	  ''
 
 -- A bar that shows current date:
