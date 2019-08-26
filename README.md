@@ -752,7 +752,7 @@ check
 
 The image below contains an import tree for `config.dhall`. It was generated using `dhall resolve --dot`.
 
-![](img/graph.png)
+[![](img/graph.png)](https://raw.githubusercontent.com/dzen-dhall/dzen-dhall/master/img/graph.png)
 
 ## Naming conventions
 
