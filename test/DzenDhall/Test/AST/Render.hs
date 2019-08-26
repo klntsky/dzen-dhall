@@ -50,5 +50,19 @@ getTests =
                       (ASTText "b")))
                (ASTText "c"))
         runRender tree `shouldBe` "^fg(red)a^fg(green)b^fg(red)c^fg()"
+
+    , testGroup "padding"
+      [ testCase "#0" do
+          let tree = ASTPadding 3 PLeft (ASTText "a")
+          runRender tree `shouldBe` "  a"
+
+      , testCase "#1" do
+          let tree = ASTPadding 3 PRight (ASTText "a")
+          runRender tree `shouldBe` "a  "
+
+      , testCase "#2" do
+          let tree = ASTPadding 3 PSides (ASTText "a")
+          runRender tree `shouldBe` " a "
+      ]
     ]
   ]

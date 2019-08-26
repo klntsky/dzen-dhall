@@ -141,12 +141,14 @@ instance Renderable AST where
           P_BOTTOM   -> ("^p(_BOTTOM)",           "^p()")
   render (ASTShape shape) = render shape
   render (ASTPadding width padding ast) = do
-    write $ mkPadding leftPadding
+    write $ mkPaddingText leftPadding
     render ast
-    write $ mkPadding rightPadding
+    write $ mkPaddingText rightPadding
     where
-      mkPadding w = Data.Text.justifyRight w ' ' ""
-      (leftPadding, rightPadding) = paddingWidths padding width
+      mkPaddingText n = Data.Text.justifyRight n ' ' ""
+      (leftPadding, rightPadding) =
+        paddingWidths padding $ width - astWidth ast
+
 
 -- * Helper functions
 

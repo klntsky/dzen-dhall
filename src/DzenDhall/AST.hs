@@ -104,19 +104,26 @@ splitAST n (ASTProp c t) = fmap (ASTProp c) (splitAST n t)
 splitAST n (ASTPadding width padding child) =
   splitAST n (spaces leftPadding <> child <> spaces rightPadding)
     where
-      (leftPadding, rightPadding) = paddingWidths padding $ width - astWidth child
+      (leftPadding, rightPadding) =
+        paddingWidths padding $ width - astWidth child
+
       spaces :: Int -> AST
       spaces 0 = EmptyAST
       spaces w = ASTText $ Data.Text.justifyRight w ' ' ""
+
 splitAST _n res@(ASTShape _) =
   EmptyR res 1 -- TODO
 
+
 paddingWidths :: Padding -> Int -> (Int, Int)
+paddingWidths _      w
+  | w <= 0 = (0, 0)
 paddingWidths PLeft  w = (w, 0)
 paddingWidths PRight w = (0, w)
 paddingWidths PSides w
   | w `mod` 2 == 0 = (w `div` 2, w `div` 2)
   | otherwise = (w `div` 2, w `div` 2 + 1)
+
 
 astWidth :: AST -> Int
 astWidth (ASTText txt) = Data.Text.length txt
