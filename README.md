@@ -305,7 +305,7 @@ Four types of shapes are supported:
 
 #### Relative positioning
 
-Relative positioning (`p`) allows to shift by some number of pixels in any direction, reset vertical position, lock or unlock horizontal position, and "move" to one of the four edges of the screen:
+Relative positioning (`p`) allows to shift by some number of pixels in any direction, reset vertical position, lock or unlock horizontal position, or move to one of the four edges of the screen:
 
 ```dhall
 let Position
@@ -327,7 +327,7 @@ For example, `(p (Position.XY { x = +10, y = -5 }) (text "Relative position"))`.
 
 #### Absolute positioning
 
-With `pa` function, it is possible to specify absolute position of a bar, relative to the top-left edge of the screen.
+With `pa` function, it is possible to specify absolute position of a bar, relative to the top-left corner of the screen.
 
 `AbsolutePosition` is defined as:
 
@@ -493,6 +493,7 @@ let Source : Type =
   , input : Text
   , updateInterval : Optional Natural
   , escape : Bool
+  }
 ```
 
 For example, a simple clock plugin can be created as follows:
@@ -746,6 +747,12 @@ check
 ```
 
 [[view complete example]](test/dhall/configs/assertions.dhall)
+
+## Code structure overview
+
+The image below contains an import tree for `config.dhall`. It was generated using `dhall resolve --dot`.
+
+![](img/graph.png)
 
 ## Naming conventions
 
