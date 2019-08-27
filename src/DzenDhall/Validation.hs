@@ -67,23 +67,12 @@ validate = reverse . go []
         Just err -> cont err what : acc
 
     colorParser =
-      hex3 <|> hex6 <|> colorName
+      (try (hex 6) <|> try (hex 3) <|> colorName) <* eof
       where
-        hex3 = do
+        hex :: Int -> Parser Text
+        hex size = do
           void $ char '#'
-          void hexDigitChar
-          void hexDigitChar
-          void hexDigitChar
-          pure ""
-
-        hex6 = do
-          void $ char '#'
-          void hexDigitChar
-          void hexDigitChar
-          void hexDigitChar
-          void hexDigitChar
-          void hexDigitChar
-          void hexDigitChar
+          replicateM_ size hexDigitChar
           pure ""
 
         colorName = do
