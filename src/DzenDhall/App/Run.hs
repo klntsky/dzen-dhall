@@ -15,6 +15,8 @@ import           Control.Monad
 import           Lens.Micro
 import           Lens.Micro.Extras
 import           System.Exit
+import           Control.Concurrent (threadDelay)
+
 
 -- | Parses 'Bar's. For each 'Configuration' spawns its own dzen binary,
 -- source threads and automata handlers.
@@ -36,14 +38,19 @@ useConfigurations = do
       (Parser.runBarParser barTokens)
       (invalidTokens barTokens) $
       \(bar :: Bar Marshalled) -> do
-        let barSettings = cfg ^. cfgBarSettings
 
         (bar', subscriptions, barRuntime, clickableAreas) <-
-          liftStartingUp (startUp cfg bar) barSettings
+          liftStartingUp (startUp cfg bar) (cfg ^. cfgBarSettings)
 
         runAppForked barRuntime (launchEventListener subscriptions clickableAreas)
 
         runAppForked barRuntime (updateForever bar')
+
+        -- This delay is required to preserve the order of multiple dzen2 instances.
+        -- We want them to overlap in exactly the same order as defined in `config.dhall`.
+        -- 50ms is nearly unnoticeable for humans, but just enough for dzen2 to connect to
+        -- X and initialize its window.
+        liftIO $ threadDelay 50000
 
 
 checkDzen2Executable :: App stage ()

@@ -137,18 +137,16 @@ mkBarRuntime cfg = do
     ToStdout -> pure System.IO.stdout
 
     ToDzen -> do
-      (mb_stdin, mb_stdout, _, _) <- liftIO $
+      (mb_stdin, _, _, _) <- liftIO $
         createProcess $
           (proc (runtime ^. rtDzenBinary) args)
             { std_out = CreatePipe
             , std_in  = CreatePipe }
 
-      case (mb_stdin, mb_stdout) of
-        (Just stdin, Just stdout) -> liftIO $ do
+      case mb_stdin of
+        (Just stdin) -> liftIO $ do
           hSetEncoding  stdin  System.IO.utf8
-          hSetEncoding  stdout System.IO.utf8
           hSetBuffering stdin  LineBuffering
-          hSetBuffering stdout LineBuffering
           pure stdin
         _ -> App.exit 4 $
           "Couldn't open IO handles for dzen binary " <>
