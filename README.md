@@ -677,9 +677,9 @@ let addHook
 
 let getEvent : Shell
 
-let getCurrentState : Shell = utils.getCurrentState
+let getCurrentState : Shell
 
-let getNextState : Shell = utils.getNextState
+let getNextState : Shell
 ```
 
 For example, The following hook will succeed only if a certain file exists:

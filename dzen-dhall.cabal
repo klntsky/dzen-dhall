@@ -4,10 +4,10 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 10b7bb09490fd44f03cfe0f614df996fbbba4483f469ac6805e660e524eb9a21
+-- hash: 755cddbb194c2b8a74e6da3aa812b7edeba500ed46a38b201db5d7a563fd8d25
 
 name:           dzen-dhall
-version:        0.0.0
+version:        1.0.1
 synopsis:       Configure dzen2 bars in Dhall language
 description:    Configure dzen2 bars in Dhall language
 homepage:       https://github.com/dzen-dhall/dzen-dhall#readme
